@@ -1,34 +1,30 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myapp
-
 spec:
-  replicas: 2
-
+  replicas: 3
   selector:
     matchLabels:
       app: nginx
-
   template:
     metadata:
       labels:
         app: nginx
-
     spec:
       containers:
         - name: cont1
-          image: aslesha123/phpapp:appimage
-
+          image: shaikmustafa/phpapp:appimage
           ports:
             - containerPort: 80
 
-          # ConfigMap integration
+        #configmap Integration
           envFrom:
             - configMapRef:
                 name: bankapp-config
 
-          # Resource requests and limits
+        #Resource Quota
           resources:
             requests:
               cpu: "100m"
