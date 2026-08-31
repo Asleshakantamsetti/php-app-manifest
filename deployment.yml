@@ -5,34 +5,38 @@ metadata:
 
 spec:
   replicas: 2
+
   selector:
     matchLabels:
       app: nginx
+
   template:
     metadata:
       labels:
         app: nginx
+
     spec:
       containers:
         - name: cont1
           image: aslesha123/phpapp:appimage
+
           ports:
             - containerPort: 80
-      
-       #configmap integration
+
+          # ConfigMap integration
           envFrom:
             - configMapRef:
                 name: bankapp-config
 
-       #Resource Quota
-          resource:
+          # Resource requests and limits
+          resources:
             requests:
               cpu: "100m"
               memory: "128Mi"
             limits:
               cpu: "200m"
               memory: "256Mi"
-           
+
           livenessProbe:
             httpGet:
               path: /
@@ -46,5 +50,3 @@ spec:
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 5
-
-
