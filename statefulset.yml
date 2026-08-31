@@ -5,6 +5,7 @@ metadata:
 
 spec:
   serviceName: mysqldb
+
   replicas: 1
 
   selector:
@@ -19,17 +20,16 @@ spec:
     spec:
       containers:
         - name: dbcont
-          image: aslesha123/phpapp:dbimage
+          image: shaikmustafa/phpapp:dbimage
 
           ports:
             - containerPort: 3306
+              name: mysql
 
-          # Secret integration
           envFrom:
             - secretRef:
                 name: bankapp-db-secret
 
-          # Resource quota
           resources:
             requests:
               cpu: "100m"
@@ -40,15 +40,18 @@ spec:
 
           volumeMounts:
             - name: mysql-data
-              mountPath: /var/lib/mysql
+              mountPath: /usr/share/nginx/html/
 
   volumeClaimTemplates:
     - metadata:
         name: mysql-data
+
       spec:
         accessModes:
           - ReadWriteOnce
-        storageClassName: gp2  
+
+        storageClassName: gp2
+
         resources:
           requests:
             storage: 2Gi
